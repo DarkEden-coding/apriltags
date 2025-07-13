@@ -106,6 +106,10 @@ class _ApriltagDetector(ctypes.Structure):
         ("refine_edges", ctypes.c_int),
         ("decode_sharpening", ctypes.c_double),
         ("debug", ctypes.c_int),
+        ("skip_black_regions", ctypes.c_int),
+        ("black_region_cell_size", ctypes.c_int),
+        ("black_region_threshold", ctypes.c_uint8),
+        ("black_region_percentage", ctypes.c_float),
     ]
 
 
@@ -275,6 +279,19 @@ class Detector:
 
     :param debug: If 1, will save debug images. Runs very slow, default: 0
 
+    :param skip_black_regions: Enable black region optimization. When enabled, the detector
+        will skip processing pixels in regions that are predominantly black, improving
+        performance for images with large dark areas, default: 1
+
+    :param black_region_cell_size: Size of grid cells used for black region analysis (in pixels).
+        Larger values are faster but less precise, default: 16
+
+    :param black_region_threshold: Pixel intensity threshold below which pixels are considered
+        black (0-255). Lower values are more aggressive, default: 10
+
+    :param black_region_percentage: Percentage of black pixels required for a cell to be
+        marked as black (0.0-1.0). Higher values are more conservative, default: 0.95
+
     :param searchpath: Where to look for the Apriltag 3 library, must be a list,
         default: ["src/lib", "src/lib64"]
     """
@@ -292,6 +309,10 @@ class Detector:
             Path(__file__).parent / "lib",
             Path(__file__).parent / "lib64",
         ),
+        skip_black_regions: int = 1,
+        black_region_cell_size: int = 16,
+        black_region_threshold: int = 10,
+        black_region_percentage: float = 0.95,
     ):
 
         # Parse the parameters
@@ -303,6 +324,10 @@ class Detector:
         self.params["refine_edges"] = refine_edges
         self.params["decode_sharpening"] = decode_sharpening
         self.params["debug"] = debug
+        self.params["skip_black_regions"] = skip_black_regions
+        self.params["black_region_cell_size"] = black_region_cell_size
+        self.params["black_region_threshold"] = black_region_threshold
+        self.params["black_region_percentage"] = black_region_percentage
 
         # detect OS to get extension for DLL
         filename_patterns_by_platform = {
@@ -415,6 +440,12 @@ class Detector:
             self.params["decode_sharpening"]
         )
         self.tag_detector_ptr.contents.debug = int(self.params["debug"])
+        
+        # Configure black region optimization parameters
+        self.tag_detector_ptr.contents.skip_black_regions = int(self.params["skip_black_regions"])
+        self.tag_detector_ptr.contents.black_region_cell_size = int(self.params["black_region_cell_size"])
+        self.tag_detector_ptr.contents.black_region_threshold = int(self.params["black_region_threshold"])
+        self.tag_detector_ptr.contents.black_region_percentage = float(self.params["black_region_percentage"])
 
     def __del__(self):
         if self.tag_detector_ptr is not None:
