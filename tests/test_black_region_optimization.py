@@ -11,9 +11,7 @@ def test_black_region_optimization_parameters():
     # Test with optimization enabled
     detector = apriltags.Detector(
         skip_black_regions=1,
-        black_region_cell_size=32,
-        black_region_threshold=20,
-        black_region_percentage=0.8
+        black_region_cell_size=32
     )
     
     # Test with optimization disabled

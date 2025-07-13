@@ -71,7 +71,8 @@ def test_black_region_optimization():
         quad_sigma=0.0,
         refine_edges=1,
         decode_sharpening=0.25,
-        debug=0
+        debug=0,
+        skip_black_regions=0
     )
     
     # Test with optimization enabled (default)
@@ -82,7 +83,8 @@ def test_black_region_optimization():
         quad_sigma=0.0,
         refine_edges=1,
         decode_sharpening=0.25,
-        debug=0
+        debug=0,
+        skip_black_regions=1
     )
     
     # Benchmark both detectors
@@ -97,7 +99,7 @@ def test_black_region_optimization():
     # Test with different black region parameters
     print(f"\nTesting with different black region parameters:")
     
-    # More aggressive optimization
+    # More aggressive optimization (smaller cell size)
     detector_aggressive = apriltags.Detector(
         families="tag36h11",
         nthreads=1,
@@ -105,7 +107,9 @@ def test_black_region_optimization():
         quad_sigma=0.0,
         refine_edges=1,
         decode_sharpening=0.25,
-        debug=0
+        debug=0,
+        skip_black_regions=1,
+        black_region_cell_size=8
     )
     
     time_aggressive = benchmark_detector(image, detector_aggressive, "Detector with aggressive optimization")

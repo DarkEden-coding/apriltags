@@ -57,27 +57,21 @@ def test_black_region_optimization_enhanced():
             'name': 'Default optimization',
             'params': {
                 'skip_black_regions': 1,
-                'black_region_cell_size': 16,
-                'black_region_threshold': 10,
-                'black_region_percentage': 0.95
+                'black_region_cell_size': 16
             }
         },
         {
-            'name': 'Aggressive optimization',
+            'name': 'Large cell optimization',
             'params': {
                 'skip_black_regions': 1,
-                'black_region_cell_size': 32,
-                'black_region_threshold': 20,
-                'black_region_percentage': 0.8
+                'black_region_cell_size': 32
             }
         },
         {
-            'name': 'Conservative optimization',
+            'name': 'Small cell optimization',
             'params': {
                 'skip_black_regions': 1,
-                'black_region_cell_size': 8,
-                'black_region_threshold': 5,
-                'black_region_percentage': 0.99
+                'black_region_cell_size': 8
             }
         }
     ]
