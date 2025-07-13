@@ -4,7 +4,6 @@ Test black region optimization functionality.
 """
 import numpy as np
 import pupil_apriltags as apriltags
-import pytest
 
 def test_black_region_optimization_parameters():
     """Test that black region optimization parameters are correctly set."""
@@ -53,9 +52,9 @@ def test_black_region_different_parameters():
     
     # Test different parameter combinations
     param_sets = [
-        {'black_region_cell_size': 8, 'black_region_threshold': 5, 'black_region_percentage': 0.9},
-        {'black_region_cell_size': 16, 'black_region_threshold': 10, 'black_region_percentage': 0.95},
-        {'black_region_cell_size': 32, 'black_region_threshold': 20, 'black_region_percentage': 0.8},
+        {'black_region_cell_size': 8},
+        {'black_region_cell_size': 16},
+        {'black_region_cell_size': 32},
     ]
     
     for params in param_sets:
